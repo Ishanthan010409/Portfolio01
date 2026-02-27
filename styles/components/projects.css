@@ -10,7 +10,7 @@
 }
 
 .project-card {
-    background: rgba(255, 255, 255, 0.05);
+    background: rgba(29, 236, 209, 0.075);
     border-radius: 25px;
     padding: 40px 30px;
     backdrop-filter: blur(10px);
@@ -19,6 +19,7 @@
     position: relative;
     overflow: hidden;
 }
+
 
 .project-card:hover {
     transform: translateY(-10px);

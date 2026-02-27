@@ -65,21 +65,44 @@
     letter-spacing: 1px;
 }
 
+css
 .about-visual {
     position: relative;
-    height: 500px;
+    height: 700px;
     display: flex;
     justify-content: center;
     align-items: center;
 }
 
+.profile-image-container {
+    position: relative;
+    width: 400px;
+    height: 700px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 2;
+}
+
+.profile-image {
+    width: 400px;
+    height: 700px;
+    object-fit: cover;
+    border-radius: 20px;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+}
+
 .morphing-circle {
     position: absolute;
-    width: 300px;
-    height: 300px;
+    top: -120px;
+    left: -120px;
+    width: 500px;
+    height: 500px;
     background: var(--gradient-1);
     border-radius: 50%;
     animation: morphCircle 8s infinite alternate ease-in-out;
-    filter: blur(20px);
-    opacity: 0.7;
+    filter: blur(30px);
+    opacity: 0.5;
+    z-index: -1;
 }
+
