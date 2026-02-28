@@ -122,43 +122,73 @@ document.querySelectorAll('a[href^="#"]').forEach(anchor => {
     });
 });
 
-// Form submission
+// Global sendMail function
+function sendMail() {
+    const contactForm = document.querySelector('.contact-form');
+    const submitButton = contactForm.querySelector('.cta-button');
+    const originalText = submitButton.innerHTML;
+    
+    // Get form values
+    let parms = {
+        name: document.getElementById("name").value,
+        email: document.getElementById("email").value,
+        subject: document.getElementById("subject").value,
+        message: document.getElementById("message").value,
+    };
+    
+    // Validate fields
+    if (!parms.name || !parms.email || !parms.subject || !parms.message) {
+        alert("Please fill in all fields!");
+        return;
+    }
+    
+    // Show loading state
+    submitButton.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Sending...';
+    submitButton.style.opacity = '0.7';
+    submitButton.disabled = true;
+    
+    // Send email using EmailJS
+    emailjs.send("service_rwo3ohh", "template_st8t4yk", parms)
+        .then(function(response) {
+            // Success
+            console.log('Email sent successfully!', response.status, response.text);
+            submitButton.innerHTML = '<i class="fas fa-check"></i> Message Sent!';
+            submitButton.style.background = 'linear-gradient(135deg, #00b09b 0%, #96c93d 100%)';
+            
+            // Show success notification
+            alert("Email sent successfully!");
+            
+            // Reset form after delay
+            setTimeout(() => {
+                submitButton.innerHTML = originalText;
+                submitButton.style.opacity = '1';
+                submitButton.disabled = false;
+                submitButton.style.background = '';
+                contactForm.reset();
+            }, 2000);
+        })
+        .catch(function(error) {
+            // Error
+            console.error('Email failed to send:', error);
+            submitButton.innerHTML = '<i class="fas fa-times"></i> Failed!';
+            submitButton.style.background = 'linear-gradient(135deg, #ff6b6b 0%, #ee5253 100%)';
+            
+            alert("Failed to send email. Please try again or email me directly at isanthan0409@gmail.com");
+            
+            setTimeout(() => {
+                submitButton.innerHTML = originalText;
+                submitButton.style.opacity = '1';
+                submitButton.disabled = false;
+                submitButton.style.background = '';
+            }, 2000);
+        });
+}
+
+// Form submission handler
 const contactForm = document.querySelector('.contact-form');
 contactForm.addEventListener('submit', function(e) {
     e.preventDefault();
-    
-    const submitButton = this.querySelector('.cta-button');
-    const originalText = submitButton.innerHTML;
-    
-    submitButton.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Sending...';
-    submitButton.style.opacity = '0.7';
-    submitButton.style.pointerEvents = 'none';
-
-    function sendMail(){
-    let parms = {
-        name : document.getElementById("name").value,
-        email : document.getElementById("email").value,
-        subject : document.getElementById("subject").value,
-        message : document.getElementById("message").value,
-    }
-
-    emailjs.send("service_rwo3ohh","template_st8t4yk",parms).then(alert("Email sent!!"))
-    }
-
-    
-    // Simulate form submission
-    setTimeout(() => {
-        submitButton.innerHTML = '<i class="fas fa-check"></i> Message Sent!';
-        submitButton.style.background = 'linear-gradient(135deg, #00b09b 0%, #96c93d 100%)';
-        
-        setTimeout(() => {
-            submitButton.innerHTML = originalText;
-            submitButton.style.opacity = '1';
-            submitButton.style.pointerEvents = 'auto';
-            submitButton.style.background = '';
-            contactForm.reset();
-        }, 2000);
-    }, 1500);
+    sendMail(); // Call the global sendMail function
 });
 
 // Liquid hover effect for skill cards
